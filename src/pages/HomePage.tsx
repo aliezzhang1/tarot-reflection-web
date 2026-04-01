@@ -3,11 +3,6 @@ import { DisclaimerDialog } from "../components/DisclaimerDialog";
 import { productCopy } from "../content/siteCopy";
 import { readReadingHistory, readTodayDailyDrawStatus } from "../utils/storage";
 
-const trustNotes = [
-  "仅供娱乐与思绪整理参考",
-  "不提供医疗、法律、金融建议",
-];
-
 type HomePageProps = {
   hasAcknowledgedDisclaimer: boolean;
   onAcknowledgeDisclaimer: () => void;
@@ -21,26 +16,11 @@ export function HomePage({
   const historyCount = readReadingHistory().length;
   const dailyDrawStatus = readTodayDailyDrawStatus();
 
-  const mobileGlanceItems = [
-    {
-      id: "glance-daily",
-      label: "今日状态",
-      value: resolveDailyDrawMeta(dailyDrawStatus),
-    },
-    {
-      id: "glance-history",
-      label: "本地记录",
-      value: historyCount ? `${historyCount} 条已保存` : "尚未保存",
-    },
-  ];
-
   const quickEntries = [
     {
       id: "daily-draw-entry",
       label: "每日一抽",
       title: "用一张牌照见今天的情绪天气",
-      description:
-        "适合在一天开始前或结束后快速抽一张牌，给自己一个更柔和的观察角度。",
       action: dailyDrawStatus === "idle" ? "打开每日一抽" : "回看今日一抽",
       meta: resolveDailyDrawMeta(dailyDrawStatus),
       href: "#daily-draw",
@@ -50,8 +30,6 @@ export function HomePage({
       id: "history-entry",
       label: "历史记录",
       title: "回看你曾经问过的问题与感受",
-      description:
-        "这里会汇总已经保存到本地的抽牌结果和笔记，方便复盘，而不是重复焦虑。",
       action: "查看历史记录",
       meta: historyCount ? `${historyCount} 条记录` : "本地存储",
       href: "#history",
@@ -61,8 +39,6 @@ export function HomePage({
       id: "notice-entry",
       label: "免责声明",
       title: "先说清边界，再进入抽牌",
-      description:
-        "页面定位是塔罗灵感与思绪整理工具，重点是陪你整理想法，而不是替你做高风险决定。",
       action: "打开正式说明",
       meta: hasAcknowledgedDisclaimer ? "已确认" : "建议先看",
       type: "button" as const,
@@ -90,21 +66,6 @@ export function HomePage({
             <p className="hero-start-hint">
               带着一个明确问题进入准备页，或者先用每日一抽开始，把一次抽牌控制在几分钟里完成。
             </p>
-
-            <div className="hero-mobile-glance" aria-label="手机端概览">
-              {mobileGlanceItems.map((item) => (
-                <div className="hero-mobile-glance-item" key={item.id}>
-                  <span className="mini-label">{item.label}</span>
-                  <strong>{item.value}</strong>
-                </div>
-              ))}
-            </div>
-
-            <ul className="trust-notes" aria-label="使用边界说明">
-              {trustNotes.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
           </div>
 
           <aside className="hero-side">
@@ -138,7 +99,6 @@ export function HomePage({
                 <span className="entry-badge">{entry.meta}</span>
               </div>
               <h3>{entry.title}</h3>
-              <p>{entry.description}</p>
               {entry.type === "button" ? (
                 <button
                   className="entry-link entry-link-button"
@@ -208,5 +168,5 @@ function resolveDailyDrawMeta(status: ReturnType<typeof readTodayDailyDrawStatus
     return "今天已抽过";
   }
 
-  return "默认单张牌";
+  return "单张抽牌";
 }

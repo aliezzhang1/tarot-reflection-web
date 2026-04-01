@@ -70,60 +70,17 @@ export function ReadingDrawPage({
       <div className="draw-header ritual-enter" style={buildDelayStyle(0.04)}>
         <p className="section-label">洗牌与抽牌</p>
         <h2>准备好就开始抽牌</h2>
-        <p className="lede">
-          你已经选好了抽牌模式、主题和问题。接下来只需要让页面短暂停一下，再进入轻量洗牌和结果页。
-        </p>
       </div>
 
-      <section className="draw-columns">
-        <article className="surface-card draw-panel ritual-enter" style={buildDelayStyle(0.1)}>
-          <p className="section-label">本次牌阵</p>
-          <h3>{spread.name}</h3>
-          <p className="summary-copy">{spread.description}</p>
-
-          <dl className="summary-list draw-info-list">
-            <div>
-              <dt>牌张数量</dt>
-              <dd>{spread.cardCount} 张牌</dd>
-            </div>
-            <div>
-              <dt>位置结构</dt>
-              <dd>{spread.positions.map((position) => position.title).join(" / ")}</dd>
-            </div>
-            <div>
-              <dt>调整方式</dt>
-              <dd>如果想换成另一种抽法，可以返回上一页修改。</dd>
-            </div>
-          </dl>
-        </article>
-
-        <aside className="surface-card draw-summary ritual-enter" style={buildDelayStyle(0.16)}>
-          <p className="section-label">当前问题</p>
-          <h3>{currentTopic.label}</h3>
-          <p className="summary-copy">{currentTopic.focus}</p>
-
-          <dl className="summary-list draw-info-list">
-            <div>
-              <dt>已选主题</dt>
-              <dd>{currentTopic.label}</dd>
-            </div>
-            <div>
-              <dt>问题</dt>
-              <dd>{normalizedQuestion || "你这次选择保留开放空间，让抽牌从当下感受开始。"}</dd>
-            </div>
-            <div>
-              <dt>抽牌模式</dt>
-              <dd>{spread.name}</dd>
-            </div>
-          </dl>
-        </aside>
-      </section>
-
-      <section className="surface-card draw-stage-card ritual-enter" style={buildDelayStyle(0.22)}>
-        <div className="draw-stage-stack">
-          <p className="section-label">洗牌与抽牌</p>
-
+      <section className="surface-card draw-stage-card ritual-enter" style={buildDelayStyle(0.1)}>
+        <div className="draw-stage-stack draw-stage-stack-compact">
           <DeckPreview cardCount={spread.cardCount} phase={drawPhase} />
+
+          <div className="draw-quick-meta" aria-label="当前抽牌设置">
+            <span className="highlight-pill">{spread.shortLabel}</span>
+            <span className="highlight-pill">{currentTopic.label}</span>
+            <span className="highlight-pill">{normalizedQuestion ? "已填写问题" : "开放问题"}</span>
+          </div>
 
           <div className="draw-stage-steps" aria-hidden="true">
             <span className={`stage-step${drawPhase === "centering" || drawPhase === "shuffling" ? " is-active" : ""}`}>
@@ -147,7 +104,25 @@ export function ReadingDrawPage({
         </div>
       </section>
 
-      <div className="draw-footer-nav ritual-enter" style={buildDelayStyle(0.28)}>
+      <section className="surface-card draw-context-card ritual-enter" style={buildDelayStyle(0.16)}>
+        <div className="draw-context-grid">
+          <article className="draw-context-block">
+            <p className="section-label">本次牌阵</p>
+            <strong>{spread.name}</strong>
+            <p className="draw-context-meta">
+              {spread.cardCount} 张牌 · {spread.positions.map((position) => position.title).join(" / ")}
+            </p>
+          </article>
+
+          <article className="draw-context-block">
+            <p className="section-label">当前主题</p>
+            <strong>{currentTopic.label}</strong>
+            <p className="draw-context-meta">{normalizedQuestion || "本次先保留开放空间。"}</p>
+          </article>
+        </div>
+      </section>
+
+      <div className="draw-footer-nav ritual-enter" style={buildDelayStyle(0.22)}>
         <button className="secondary-button" onClick={onBack} type="button">
           返回上一页
         </button>
@@ -185,11 +160,11 @@ function resolveDrawStageTitle(phase: DeckPreviewPhase) {
 
 function resolveDrawStageDescription(phase: DeckPreviewPhase) {
   if (phase === "centering") {
-    return "页面会先短暂停一下，让注意力慢慢收回来，再进入轻量洗牌。这个过渡只是帮助你聚焦，不是在制造神秘感。";
+    return "页面会先短暂停一下，让注意力慢慢收回来，再进入轻量洗牌。";
   }
 
   if (phase === "shuffling") {
-    return "卡牌会做一段简短而克制的洗牌过渡，然后直接带你进入结果页。";
+    return "卡牌会做一段简短而克制的过渡，然后直接带你进入结果页。";
   }
 
   return "";
