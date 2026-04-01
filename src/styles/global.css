@@ -4640,3 +4640,9 @@ body {
     display: block;
   }
 }
+
+@media (max-width: 960px) {
+  .mobile-hidden-badge {
+    display: none !important;
+  }
+}

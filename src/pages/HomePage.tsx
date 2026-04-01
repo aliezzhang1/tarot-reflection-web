@@ -78,7 +78,7 @@ export function HomePage({
     >
       <div className="entry-head">
         <p className="section-label">{entry.label}</p>
-        <span className="entry-badge">{entry.meta}</span>
+        <span className={`entry-badge${entry.id !== "notice-entry" ? " mobile-hidden-badge" : ""}`}>{entry.meta}</span>
       </div>
       <h3>{entry.title}</h3>
       <p className="entry-description entry-description-desktop">{entry.description}</p>
@@ -215,3 +215,4 @@ function resolveDailyDrawMeta(status: ReturnType<typeof readTodayDailyDrawStatus
 
   return "单张抽牌";
 }
+
