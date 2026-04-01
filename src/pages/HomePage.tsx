@@ -39,7 +39,7 @@ export function HomePage({
       title: "用一张牌照见今天的情绪天气",
       description:
         "适合在一天开始前或结束后快速抽一张牌，给自己一个更柔和的观察角度。",
-      action: dailyDrawStatus === "idle" ? "打开每日一抽" : "回看今日一抽",
+      action: "打开每日一抽",
       meta: resolveDailyDrawMeta(dailyDrawStatus),
       href: "#daily-draw",
       type: "link",
@@ -206,13 +206,15 @@ export function HomePage({
 
 function resolveDailyDrawMeta(status: ReturnType<typeof readTodayDailyDrawStatus>) {
   if (status === "saved") {
-    return "今日已抽";
+    return "今日已翻开";
   }
 
   if (status === "drawn") {
-    return "今日已抽";
+    return "今日已翻开";
   }
 
   return "单张抽牌";
 }
+
+
 

@@ -4646,3 +4646,16 @@ body {
     display: none !important;
   }
 }
+
+/* Daily draw desktop title cleanup */
+@media (min-width: 961px) {
+  .daily-draw-header h2 {
+    max-width: none;
+    white-space: nowrap;
+    font-size: clamp(2.3rem, 4vw, 3.4rem);
+    line-height: 0.98;
+  }
+}
+
+
+

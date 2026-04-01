@@ -103,14 +103,14 @@ describe("buildReadingShareCard", () => {
 });
 
 describe("daily draw helpers", () => {
-  it("creates a stable daily seed from the local date", () => {
-    const seed = createDailyDrawSeed(new Date(2026, 2, 30, 8, 30, 0));
+  it("creates a daily seed that keeps the date and supports fresh draws", () => {
+    const seed = createDailyDrawSeed(new Date(2026, 2, 30, 8, 30, 0), "draw-1");
 
-    expect(seed).toBe("daily-draw:daily-inspiration:2026-03-30");
+    expect(seed).toBe("daily-draw:daily-inspiration:2026-03-30:draw-1");
   });
 
-  it("builds a deterministic single-card daily draw result", () => {
-    const seed = "daily-draw:daily-inspiration:2026-03-30";
+  it("builds a deterministic single-card daily draw result when the seed is fixed", () => {
+    const seed = "daily-draw:daily-inspiration:2026-03-30:draw-1";
     const resultA = buildReadingResult({
       draft: dailyDrawDraft,
       spreadId: "single-card",
@@ -131,3 +131,4 @@ describe("daily draw helpers", () => {
     expect(resultA.items[0].draw.orientation).toBe(resultB.items[0].draw.orientation);
   });
 });
+

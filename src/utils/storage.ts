@@ -1,4 +1,4 @@
-import { createDailyDrawSeed, type SavedReadingRecord } from "./readingFlow";
+﻿import { createDailyDrawDateKey, type SavedReadingRecord } from "./readingFlow";
 
 const READING_HISTORY_STORAGE_KEY = "tarot-reflection:reading-history";
 const DAILY_DRAW_MARKER_PREFIX = "tarot-reflection:daily-draw-drawn:";
@@ -97,7 +97,7 @@ export function markDailyDrawDrawn(date: Date = new Date()) {
 }
 
 export function readTodayDailyDrawStatus(date: Date = new Date()): DailyDrawStatus {
-  if (getSavedReadingRecord(createDailyDrawSeed(date))) {
+  if (hasSavedDailyDrawForDate(date)) {
     return "saved";
   }
 
@@ -112,16 +112,21 @@ function writeReadingHistory(history: SavedReadingRecord[]) {
   window.localStorage.setItem(READING_HISTORY_STORAGE_KEY, JSON.stringify(history));
 }
 
-function getDailyDrawMarkerKey(date: Date) {
-  return `${DAILY_DRAW_MARKER_PREFIX}${formatLocalDateKey(date)}`;
+function hasSavedDailyDrawForDate(date: Date) {
+  const dateKey = createDailyDrawDateKey(date);
+
+  return readReadingHistory().some((item) => {
+    if (item.topic !== "daily-inspiration") {
+      return false;
+    }
+
+    const createdAt = new Date(item.createdAt);
+    return !Number.isNaN(createdAt.getTime()) && createDailyDrawDateKey(createdAt) === dateKey;
+  });
 }
 
-function formatLocalDateKey(date: Date) {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
-
-  return `${year}-${month}-${day}`;
+function getDailyDrawMarkerKey(date: Date) {
+  return `${DAILY_DRAW_MARKER_PREFIX}${createDailyDrawDateKey(date)}`;
 }
 
 function isSavedReadingRecord(value: unknown): value is SavedReadingRecord {

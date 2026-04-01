@@ -61,7 +61,8 @@ export function DailyDrawPage({
     <section className="daily-draw-shell ritual-page">
       <div className="daily-draw-header ritual-enter" style={buildDelayStyle(0.04)}>
         <p className="section-label">每日一抽</p>
-        <h2>今天先用一张牌，替自己留一个安静切口</h2>
+                <h2>翻开一张牌，给自己留一点安静</h2>
+
         <div className="daily-draw-meta">
           <p className="daily-draw-date">{todayLabel}</p>
           <span className="entry-badge">{resolveDailyStatusLabel(todayStatus)}</span>
@@ -119,11 +120,11 @@ function clearTimers(timers: number[]) {
 
 function resolveDailyStatusLabel(status: ReturnType<typeof readTodayDailyDrawStatus>) {
   if (status === "saved") {
-    return "今日已抽";
+    return "今日已翻开";
   }
 
   if (status === "drawn") {
-    return "今日已抽";
+    return "今日已翻开";
   }
 
   return "默认单张牌";
@@ -160,6 +161,11 @@ function formatDailyDrawDate(date: Date) {
     weekday: "long",
   }).format(date);
 }
+
+
+
+
+
 
 
 

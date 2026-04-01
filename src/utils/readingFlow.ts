@@ -76,12 +76,19 @@ export function createReadingSeed(draft: ReadingDraft, spreadId: TarotSpreadId) 
   return `${spreadId}:${draft.topic}:${questionPart}:${Date.now()}`;
 }
 
-export function createDailyDrawSeed(date: Date = new Date()) {
+export function createDailyDrawDateKey(date: Date = new Date()) {
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, "0");
   const day = String(date.getDate()).padStart(2, "0");
 
-  return `daily-draw:daily-inspiration:${year}-${month}-${day}`;
+  return `${year}-${month}-${day}`;
+}
+
+export function createDailyDrawSeed(
+  date: Date = new Date(),
+  entropy = `${date.getTime()}-${Math.random().toString(36).slice(2, 8)}`,
+) {
+  return `daily-draw:daily-inspiration:${createDailyDrawDateKey(date)}:${entropy}`;
 }
 
 export function buildReadingResult({
@@ -299,3 +306,4 @@ function escapeSvgText(value: string) {
     .replace(/\"/g, "&quot;")
     .replace(/'/g, "&apos;");
 }
+
