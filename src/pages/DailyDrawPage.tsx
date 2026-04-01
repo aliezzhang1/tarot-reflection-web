@@ -119,11 +119,11 @@ function clearTimers(timers: number[]) {
 
 function resolveDailyStatusLabel(status: ReturnType<typeof readTodayDailyDrawStatus>) {
   if (status === "saved") {
-    return "今日已保存";
+    return "今日已抽";
   }
 
   if (status === "drawn") {
-    return "今天已抽过";
+    return "今日已抽";
   }
 
   return "默认单张牌";
@@ -160,3 +160,6 @@ function formatDailyDrawDate(date: Date) {
     weekday: "long",
   }).format(date);
 }
+
+
+

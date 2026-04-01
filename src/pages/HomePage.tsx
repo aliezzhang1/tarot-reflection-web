@@ -3,9 +3,25 @@ import { DisclaimerDialog } from "../components/DisclaimerDialog";
 import { productCopy } from "../content/siteCopy";
 import { readReadingHistory, readTodayDailyDrawStatus } from "../utils/storage";
 
+const trustNotes = [
+  "仅供娱乐与思绪整理参考",
+  "不提供医疗、法律、金融建议",
+];
+
 type HomePageProps = {
   hasAcknowledgedDisclaimer: boolean;
   onAcknowledgeDisclaimer: () => void;
+};
+
+type QuickEntry = {
+  id: string;
+  label: string;
+  title: string;
+  description: string;
+  action: string;
+  meta: string;
+  href?: string;
+  type: "link" | "button";
 };
 
 export function HomePage({
@@ -16,34 +32,71 @@ export function HomePage({
   const historyCount = readReadingHistory().length;
   const dailyDrawStatus = readTodayDailyDrawStatus();
 
-  const quickEntries = [
+  const quickEntries: QuickEntry[] = [
     {
       id: "daily-draw-entry",
       label: "每日一抽",
       title: "用一张牌照见今天的情绪天气",
+      description:
+        "适合在一天开始前或结束后快速抽一张牌，给自己一个更柔和的观察角度。",
       action: dailyDrawStatus === "idle" ? "打开每日一抽" : "回看今日一抽",
       meta: resolveDailyDrawMeta(dailyDrawStatus),
       href: "#daily-draw",
-      type: "link" as const,
+      type: "link",
     },
     {
       id: "history-entry",
       label: "历史记录",
       title: "回看你曾经问过的问题与感受",
+      description:
+        "这里会汇总已经保存到本地的抽牌结果和笔记，方便复盘，而不是重复焦虑。",
       action: "查看历史记录",
       meta: historyCount ? `${historyCount} 条记录` : "本地存储",
       href: "#history",
-      type: "link" as const,
+      type: "link",
     },
     {
       id: "notice-entry",
       label: "免责声明",
       title: "先说清边界，再进入抽牌",
+      description:
+        "页面定位是塔罗灵感与思绪整理工具，重点是陪你整理想法，而不是替你做高风险决定。",
       action: "打开正式说明",
       meta: hasAcknowledgedDisclaimer ? "已确认" : "建议先看",
-      type: "button" as const,
+      type: "button",
     },
   ];
+
+  const primaryEntries = quickEntries.filter((entry) => entry.id !== "notice-entry");
+  const disclaimerEntry = quickEntries.find((entry) => entry.id === "notice-entry");
+
+  const renderEntryCard = (entry: QuickEntry, extraClassName?: string) => (
+    <article
+      className={`surface-card entry-card${extraClassName ? ` ${extraClassName}` : ""}`}
+      id={entry.id}
+      key={`${entry.id}-${extraClassName ?? "default"}`}
+    >
+      <div className="entry-head">
+        <p className="section-label">{entry.label}</p>
+        <span className="entry-badge">{entry.meta}</span>
+      </div>
+      <h3>{entry.title}</h3>
+      <p className="entry-description entry-description-desktop">{entry.description}</p>
+      {entry.type === "button" ? (
+        <button
+          className="entry-link entry-link-button"
+          onClick={() => setIsDisclaimerOpen(true)}
+          type="button"
+        >
+          {entry.action}
+        </button>
+      ) : (
+        <a className="entry-link" href={entry.href}>
+          {entry.action}
+        </a>
+      )}
+    </article>
+  );
 
   return (
     <>
@@ -51,7 +104,11 @@ export function HomePage({
         <section className="surface-card landing-hero">
           <div className="hero-copy">
             <p className="section-label">塔罗灵感 / 思绪整理工具</p>
-            <h2>{productCopy.heroTitle}</h2>
+            <h2 className="hero-mobile-title">{productCopy.heroTitle}</h2>
+            <h2 className="hero-desktop-title">
+              <span className="hero-title-line">把问题放轻一点</span>
+              <span className="hero-title-line">再抽一张牌</span>
+            </h2>
             <p className="lede">{productCopy.heroDescription}</p>
 
             <div className="action-row">
@@ -66,6 +123,12 @@ export function HomePage({
             <p className="hero-start-hint">
               带着一个明确问题进入准备页，或者先用每日一抽开始，把一次抽牌控制在几分钟里完成。
             </p>
+
+            <ul className="trust-notes trust-notes-desktop" aria-label="使用边界说明">
+              {trustNotes.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
           </div>
 
           <aside className="hero-side">
@@ -92,28 +155,8 @@ export function HomePage({
         </section>
 
         <section className="entry-grid" aria-label="首页快捷入口">
-          {quickEntries.map((entry) => (
-            <article className="surface-card entry-card" id={entry.id} key={entry.id}>
-              <div className="entry-head">
-                <p className="section-label">{entry.label}</p>
-                <span className="entry-badge">{entry.meta}</span>
-              </div>
-              <h3>{entry.title}</h3>
-              {entry.type === "button" ? (
-                <button
-                  className="entry-link entry-link-button"
-                  onClick={() => setIsDisclaimerOpen(true)}
-                  type="button"
-                >
-                  {entry.action}
-                </button>
-              ) : (
-                <a className="entry-link" href={entry.href}>
-                  {entry.action}
-                </a>
-              )}
-            </article>
-          ))}
+          {primaryEntries.map((entry) => renderEntryCard(entry))}
+          {disclaimerEntry ? renderEntryCard(disclaimerEntry, "desktop-disclaimer-card") : null}
         </section>
 
         <section className="home-columns">
@@ -144,6 +187,8 @@ export function HomePage({
             </div>
           </article>
         </section>
+
+        {disclaimerEntry ? renderEntryCard(disclaimerEntry, "mobile-disclaimer-card") : null}
       </section>
 
       <DisclaimerDialog
@@ -161,11 +206,11 @@ export function HomePage({
 
 function resolveDailyDrawMeta(status: ReturnType<typeof readTodayDailyDrawStatus>) {
   if (status === "saved") {
-    return "今日已保存";
+    return "今日已抽";
   }
 
   if (status === "drawn") {
-    return "今天已抽过";
+    return "今日已抽";
   }
 
   return "单张抽牌";
