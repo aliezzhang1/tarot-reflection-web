@@ -1,9 +1,9 @@
-export type TarotCardArtwork = {
+﻿export type TarotCardArtwork = {
   imageSrc: string;
   imageAlt: string;
 };
 
-const artworkBasePath = "/cards/major-arcana";
+const artworkBasePath = "https://tarot-1418573091.cos.ap-hongkong.myqcloud.com/cards/major-arcana";
 
 export const majorArcanaArtworkMap = {
   "major-fool": {

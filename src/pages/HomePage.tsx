@@ -120,7 +120,10 @@ export function HomePage({
               </a>
             </div>
 
-            <p className="hero-start-hint">
+            <p className="hero-start-hint hero-start-hint--desktop">
+              带着一个明确问题进入准备页，或者先用每日一抽开始。
+            </p>
+            <p className="hero-start-hint hero-start-hint--mobile">
               带着一个明确问题进入准备页，或者先用每日一抽开始，把一次抽牌控制在几分钟里完成。
             </p>
 
@@ -215,6 +218,8 @@ function resolveDailyDrawMeta(status: ReturnType<typeof readTodayDailyDrawStatus
 
   return "单张抽牌";
 }
+
+
 
 
 

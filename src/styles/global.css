@@ -2502,6 +2502,14 @@ body {
   line-height: 1.68;
 }
 
+.hero-start-hint--desktop {
+  display: none;
+}
+
+.hero-start-hint--mobile {
+  display: block;
+}
+
 .hero-highlight-row {
   margin-top: var(--space-sm);
   justify-content: flex-start;
@@ -2760,7 +2768,7 @@ body {
 
 /* Custom tarot card back artwork */
 :root {
-  --tarot-card-back-image: url("/cards/major-arcana/major-arcana-back.webp");
+  --tarot-card-back-image: url("https://tarot-1418573091.cos.ap-hongkong.myqcloud.com/cards/major-arcana/major-arcana-back.webp");
 }
 
 .card-back,
@@ -3076,6 +3084,11 @@ body {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: auto;
 }
 
 .simple-deck-count {
@@ -3394,13 +3407,13 @@ body {
 }
 
 .simple-deck-preview.is-single .simple-deck-stack {
-  width: 148px;
-  height: 238px;
+  width: 156px;
+  height: 250px;
 }
 
 .simple-deck-preview.is-single .simple-deck-card {
   position: relative;
-  width: 148px;
+  width: 156px;
   aspect-ratio: 5 / 8;
 }
 
@@ -3415,6 +3428,8 @@ body {
   width: 124px;
   aspect-ratio: 5 / 8;
   border-radius: 18px;
+  backface-visibility: hidden;
+  will-change: transform;
 }
 
 .simple-deck-preview.is-three .simple-deck-card--1 {
@@ -3426,7 +3441,7 @@ body {
 .simple-deck-preview.is-three .simple-deck-card--2 {
   left: 55px;
   z-index: 2;
-  transform: translateY(0);
+  transform: translateZ(0) translateY(0);
 }
 
 .simple-deck-preview.is-three .simple-deck-card--3 {
@@ -3478,21 +3493,21 @@ body {
   }
 
   .simple-deck-preview.is-single .simple-deck-stack {
-    width: 136px;
-    height: 218px;
+    width: 144px;
+    height: 230px;
   }
 
   .simple-deck-preview.is-single .simple-deck-card {
-    width: 136px;
+    width: 144px;
   }
 
   .simple-deck-preview.is-three .simple-deck-stack {
-    width: 208px;
-    height: 170px;
+    width: 214px;
+    height: 176px;
   }
 
   .simple-deck-preview.is-three .simple-deck-card {
-    width: 108px;
+    width: 110px;
     border-radius: 16px;
   }
 
@@ -3502,11 +3517,12 @@ body {
   }
 
   .simple-deck-preview.is-three .simple-deck-card--2 {
-    left: 50px;
+    left: 52px;
+    transform: translateZ(0) translateY(0) scale(1.02);
   }
 
   .simple-deck-preview.is-three .simple-deck-card--3 {
-    left: 98px;
+    left: 102px;
     transform: rotate(9deg) translateY(10px);
   }
 }
@@ -4657,5 +4673,50 @@ body {
   }
 }
 
+
+
+
+
+/* Desktop ornament and result-title alignment refinements */
+@media (min-width: 961px) {
+  .site-ornament {
+    right: -0.5rem;
+  }
+
+  .result-shell .result-header h2 {
+    max-width: none;
+    white-space: nowrap;
+    line-height: 1.02;
+  }
+}
+
+
+
+
+
+
+
+@media (min-width: 961px) {
+  .hero-start-hint-desktop {
+    display: inline;
+  }
+
+  .hero-start-hint-mobile {
+    display: none;
+  }
+}
+
+
+
+
+@media (min-width: 961px) {
+  .hero-start-hint--desktop {
+    display: block;
+  }
+
+  .hero-start-hint--mobile {
+    display: none;
+  }
+}
 
 

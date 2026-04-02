@@ -11,7 +11,7 @@ export function AppLayout({ children }: PropsWithChildren) {
         aria-hidden="true"
         className="site-ornament"
         decoding="async"
-        src="/decor/ornament-transparent.webp"
+        src="https://tarot-1418573091.cos.ap-hongkong.myqcloud.com/decor/ornament-transparent.webp"
       />
 
       <header className="site-header">
@@ -29,3 +29,4 @@ export function AppLayout({ children }: PropsWithChildren) {
     </div>
   );
 }
+
