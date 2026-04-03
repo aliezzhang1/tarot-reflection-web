@@ -1,4 +1,4 @@
-﻿:root {
+:root {
   color-scheme: light;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -2755,6 +2755,13 @@ body {
 @media (max-width: 640px) {
   .daily-draw-header {
     gap: var(--space-xs);
+  }
+
+  .daily-draw-header h2 {
+    font-size: clamp(1.28rem, 6.2vw, 1.72rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    white-space: nowrap;
   }
 
   .daily-draw-date {
